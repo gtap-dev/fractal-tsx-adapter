@@ -1,0 +1,37 @@
+# Ignore node_modules in this directory
+node_modules/
+
+#Ignore all following pre-dot directories and files
+.sass-cache
+.tscache
+
+#Ignore sublime specific
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+*.map
+
+# sftp configuration file
+sftp-config.json
+
+# DW Dreamweaver added files
+_notes
+dwsync.xml
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# OSX specific
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+#Ignore log files
+.log
+.map
+.tmp.txt
