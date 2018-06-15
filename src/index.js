@@ -32,6 +32,7 @@ class ReactAdapter extends Adapter {
     }
 
     render(path, str, context, meta) {
+        delete require.cache[path];
         let component = require(path);
 
         component = component.default || component;
@@ -46,7 +47,9 @@ class ReactAdapter extends Adapter {
         setEnv('_env', meta.env, context);
         setEnv('_config', this._app.config(), context);
 
-        delete require.cache[path];
+        global.app = {
+            publicFolder: this.getPath('/', meta)
+        };
 
         const element = React.createElement(component, context);
         const html = this._renderMethod(element);
@@ -63,6 +66,10 @@ class ReactAdapter extends Adapter {
         setEnv('_target', meta.target, context);
         setEnv('_env', meta.env, context);
         setEnv('_config', this._app.config(), context);
+
+        global.app = {
+            publicFolder: this.getPath('/', meta)
+        };
 
         delete require.cache[path];
 
