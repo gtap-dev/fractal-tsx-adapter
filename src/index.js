@@ -8,7 +8,9 @@ const Promise    = require('bluebird');
 const Adapter    = require('@frctl/fractal').Adapter;
 const utils      = require('@frctl/fractal').utils;
 
-require('ts-node/register/transpile-only').register();
+require('ts-node').register({
+    transpileOnly: true
+});
 require('tsconfig-paths').register();
 
 const DEFAULT_OPTIONS = {
