@@ -40,7 +40,10 @@ class ReactAdapter extends Adapter {
             publicFolder: this.getPath('/', meta)
         };
 
-        delete require.cache[path];
+        if (meta && meta.env && meta.env.server) {
+            delete require.cache[path];
+        }
+
         let component = require(path);
 
         component = component.default || component;
@@ -73,7 +76,9 @@ class ReactAdapter extends Adapter {
             publicFolder: this.getPath('/', meta)
         };
 
-        delete require.cache[path];
+        if (meta.env.server) {
+            delete require.cache[path];
+        }
 
         let component = require(path);
 
