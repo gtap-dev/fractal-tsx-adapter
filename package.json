@@ -20,6 +20,7 @@
   "dependencies": {
     "bluebird": "^3.5.2",
     "lodash": "^4.17.11",
+    "react-jsx-parser": "^1.16.1",
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.6.0"
   },

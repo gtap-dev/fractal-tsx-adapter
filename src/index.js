@@ -8,6 +8,8 @@ const Promise    = require('bluebird');
 const Adapter    = require('@frctl/fractal').Adapter;
 const utils      = require('@frctl/fractal').utils;
 
+const JsxParser = require('react-jsx-parser').default;
+
 require('ts-node').register({
     transpileOnly: true
 });
@@ -31,6 +33,48 @@ class ReactAdapter extends Adapter {
         } else {
             this._renderMethod = ReactDOM.renderToStaticMarkup;
         }
+
+        this.components = {};
+    }
+
+    getAllComponents() {
+        const componentLibrary = {};
+
+        this._app.components.flatten().each((item) => {
+            let component = require(item.viewPath);
+
+            component = component.default || component;
+
+            componentLibrary[component.name] = component;
+        });
+
+        return componentLibrary;
+    }
+
+    wrapChildren(children) {
+        return React.createElement(JsxParser, {
+            jsx: children,
+            components: this.getAllComponents(),
+            renderInWrapper: false
+        });
+    };
+
+    getContext(context, parseJsxFrom) {
+        if (parseJsxFrom && parseJsxFrom.length) {
+            const newContext = {};
+
+            for (const item of parseJsxFrom) {
+                const contextString = context[item];
+
+                if (typeof contextString !== 'undefined' && typeof contextString === 'string') {
+                    newContext[item] = this.wrapChildren(contextString);
+                }
+            }
+
+            return Object.assign({}, context, newContext);
+        }
+
+        return context;
     }
 
     render(path, str, context, meta) {
@@ -56,7 +100,7 @@ class ReactAdapter extends Adapter {
         setEnv('_env', meta.env, context);
         setEnv('_config', this._app.config(), context);
 
-        const element = React.createElement(component, context);
+        const element = React.createElement(component, this.getContext(context, meta.self.meta.parseJsxFrom));
         const html = this._renderMethod(element);
 
         return Promise.resolve(html);

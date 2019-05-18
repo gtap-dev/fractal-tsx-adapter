@@ -17,3 +17,37 @@ Register the adapter as engine:
 ```
 fractal.components.engine(tsxAdapter);
 ```
+
+# Features
+
+## Use HTML/JSX in context strings
+
+By default, it's not possible to use HTML (or other Fractal components as JSX) in context variables.
+
+So this example:
+```
+{
+  "context": {
+    "children": "<div>this text is in a div</div>"
+  }
+}
+```
+does not render a div in children, instead it escapes the string.
+
+To workaround that, you can set the `parseJsxFrom` meta key in your component config:
+```
+{
+  "meta": {
+    "parseJsxFrom": [
+      "children"
+    ]
+  },
+  "context": {
+    "children": "<div>this text is in a div</div>"
+  }
+}
+```
+
+This adapter will then parse the specified keys through [react-jsx-parser](https://github.com/TroyAlford/react-jsx-parser). This allows the use of HTML in context strings. Additionally, it allows the use of other components in the current Fractal library.
+
+> NB! This also means you need to do the same parsing when hydrating the component client-side.
