@@ -2,6 +2,7 @@
 
 const _          = require('lodash');
 const path       = require('path');
+const decache    = require('cache');
 const React      = require('react');
 const ReactDOM   = require('react-dom/server');
 const Promise    = require('bluebird');
@@ -85,7 +86,7 @@ class ReactAdapter extends Adapter {
         };
 
         if (meta && meta.env && meta.env.server) {
-            delete require.cache[path];
+            decache(path);
         }
 
         let component = require(path);
@@ -121,7 +122,7 @@ class ReactAdapter extends Adapter {
         };
 
         if (meta.env.server) {
-            delete require.cache[path];
+            decache(path);
         }
 
         let component = require(path);
