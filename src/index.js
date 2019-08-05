@@ -2,7 +2,7 @@
 
 const _          = require('lodash');
 const path       = require('path');
-const decache    = require('decache');
+const decache    = require('./decache.js');
 const React      = require('react');
 const ReactDOM   = require('react-dom/server');
 const Promise    = require('bluebird');

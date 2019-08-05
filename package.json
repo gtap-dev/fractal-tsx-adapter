@@ -19,7 +19,6 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.5.2",
-    "decache": "^4.5.1",
     "lodash": "^4.17.11",
     "react-jsx-parser": "^1.16.1",
     "ts-node": "^7.0.1",
