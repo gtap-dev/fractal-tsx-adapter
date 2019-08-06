@@ -58,21 +58,33 @@ class ReactAdapter extends Adapter {
             components: this.getAllComponents(),
             renderInWrapper: false
         });
-    };
+    }
+
+    wrapString(str) {
+        if (typeof str !== 'undefined' && typeof str === 'string') {
+            return this.wrapChildren(str);
+        }
+
+        return str;
+    }
 
     getContext(context, parseJsxFrom) {
         if (parseJsxFrom && parseJsxFrom.length) {
-            const newContext = {};
+            const newContext = JSON.parse(JSON.stringify(context));
 
             for (const item of parseJsxFrom) {
-                const contextString = context[item];
+                const arr = item.split('.');
 
-                if (typeof contextString !== 'undefined' && typeof contextString === 'string') {
-                    newContext[item] = this.wrapChildren(contextString);
-                }
+                arr.reduce((object, item, index) => {
+                    if (index === arr.length - 1) {
+                        object[item] = this.wrapString(object[item]);
+                    }
+
+                    return object[item];
+                }, newContext);
             }
 
-            return Object.assign({}, context, newContext);
+            return newContext;
         }
 
         return context;
