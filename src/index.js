@@ -11,11 +11,6 @@ const utils      = require('@frctl/fractal').utils;
 
 const JsxParser = require('react-jsx-parser').default;
 
-require('ts-node').register({
-    transpileOnly: true
-});
-require('tsconfig-paths').register();
-
 const DEFAULT_OPTIONS = {
     renderMethod: 'renderToString'
 };
@@ -182,6 +177,23 @@ module.exports = function(config = {}) {
 
     return {
         register(source, app) {
+            const registerTsconfig = () => {
+                require('tsconfig-paths').register();
+            };
+            const handleLoaded = () => {
+                require('ts-node').register({
+                    transpileOnly: true
+                });
+
+                registerTsconfig();
+            };
+            const handleUpdated = () => {
+                registerTsconfig();
+            };
+
+            app.components.on('loaded', handleLoaded);
+            app.components.on('updated', handleUpdated);
+
             const adapter = new ReactAdapter(source, app, options);
 
             return adapter;
