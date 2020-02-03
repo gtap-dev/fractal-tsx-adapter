@@ -12,7 +12,8 @@ const utils      = require('@frctl/fractal').utils;
 const JsxParser = require('react-jsx-parser').default;
 
 const DEFAULT_OPTIONS = {
-    renderMethod: 'renderToString'
+    renderMethod: 'renderToString',
+    wrapperElements: []
 };
 
 /*
@@ -29,7 +30,7 @@ class ReactAdapter extends Adapter {
         } else {
             this._renderMethod = ReactDOM.renderToStaticMarkup;
         }
-
+        this.options = options;
         this.components = {};
     }
 
@@ -85,6 +86,32 @@ class ReactAdapter extends Adapter {
         return context;
     }
 
+    getWrapperComponent(component) {
+        if (typeof component === 'string' && component.startsWith('@')) {
+            const comp = this._app.components.flatten().find(component);
+
+            if (comp) {
+                return require(comp.viewPath).default;
+            }
+        }
+
+        return component;
+    }
+
+    renderParentElements(children) {
+        if (this.options.wrapperElements.length) {
+            return this.options.wrapperElements.reverse().reduce((currentElement, wrapperObject) => {
+                const wrapperComponent = this.getWrapperComponent(wrapperObject.component);
+
+                return React.createElement(wrapperComponent, Object.assign({}, wrapperObject.props, {
+                    children: currentElement
+                }));
+            }, children);
+        }
+
+        return children;
+    }
+
     render(path, str, context, meta) {
         meta = meta || {};
 
@@ -109,7 +136,8 @@ class ReactAdapter extends Adapter {
         setEnv('_config', this._app.config(), context);
 
         const element = React.createElement(component, this.getContext(context, meta.self.meta.parseJsxFrom));
-        const html = this._renderMethod(element);
+        const parentElements = this.renderParentElements(element);
+        const html = this._renderMethod(parentElements);
 
         return Promise.resolve(html);
     }
