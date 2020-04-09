@@ -13,6 +13,7 @@ const JsxParser = require('react-jsx-parser').default;
 
 const DEFAULT_OPTIONS = {
     renderMethod: 'renderToString',
+    ssr: true,
     wrapperElements: []
 };
 
@@ -119,7 +120,7 @@ class ReactAdapter extends Adapter {
             publicFolder: this.getPath('/', meta)
         };
 
-        if (meta && meta.env && meta.env.server) {
+        if (meta && meta.env && meta.env.server && this.options.ssr) {
             decache(path);
         }
 
@@ -135,11 +136,15 @@ class ReactAdapter extends Adapter {
         setEnv('_env', meta.env, context);
         setEnv('_config', this._app.config(), context);
 
-        const element = React.createElement(component, this.getContext(context, meta.self.meta.parseJsxFrom));
-        const parentElements = this.renderParentElements(element);
-        const html = this._renderMethod(parentElements);
+        if (this.options.ssr) {
+            const element = React.createElement(component, this.getContext(context, meta.self.meta.parseJsxFrom));
+            const parentElements = this.renderParentElements(element);
+            const html = this._renderMethod(parentElements);
 
-        return Promise.resolve(html);
+            return Promise.resolve(html);
+        }
+
+        return '';
     }
 
     renderLayout(path, str, context, meta) {
@@ -156,7 +161,7 @@ class ReactAdapter extends Adapter {
             publicFolder: this.getPath('/', meta)
         };
 
-        if (meta.env.server) {
+        if (meta.env.server && this.options.ssr) {
             decache(path);
         }
 
