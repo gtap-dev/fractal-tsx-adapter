@@ -136,7 +136,7 @@ class ReactAdapter extends Adapter {
         setEnv('_env', meta.env, context);
         setEnv('_config', this._app.config(), context);
 
-        if (this.options.ssr) {
+        if (this.options.ssr || meta.env.ssr) {
             const element = React.createElement(component, this.getContext(context, meta.self.meta.parseJsxFrom));
             const parentElements = this.renderParentElements(element);
             const html = this._renderMethod(parentElements);
