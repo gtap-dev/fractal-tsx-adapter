@@ -5,7 +5,6 @@ const path       = require('path');
 const decache    = require('./decache.js');
 const React      = require('react');
 const ReactDOM   = require('react-dom/server');
-const Promise    = require('bluebird');
 const Adapter    = require('@frctl/fractal').Adapter;
 const utils      = require('@frctl/fractal').utils;
 
