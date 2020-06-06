@@ -120,7 +120,7 @@ class ReactAdapter extends Adapter {
             publicFolder: this.getPath('/', meta)
         };
 
-        if (meta && meta.env && meta.env.server && this.options.ssr) {
+        if (meta && meta.env && meta.env.server && this.options.ssr && !meta.self.meta.cache) {
             decache(path);
         }
 
