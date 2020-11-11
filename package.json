@@ -19,21 +19,23 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.20",
-    "react-jsx-parser": "^1.26.3",
+    "react-jsx-parser": "^1.27.0",
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0"
   },
   "devDependencies": {
-    "@frctl/fractal": "^1.4.1",
-    "eslint": "^7.12.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "@frctl/fractal": "^1.5.0",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
+    "eslint": "^7.13.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "typescript": "^4.0.5"
   },
   "peerDependencies": {
     "@frctl/fractal": ">= 1.1.7 < 2",
-    "react": ">= 16.6.0 < 17",
-    "react-dom": ">= 16.6.0 < 17",
+    "react": ">= 16.6.0 < 18",
+    "react-dom": ">= 16.6.0 < 18",
     "typescript": ">= 2"
   }
 }
