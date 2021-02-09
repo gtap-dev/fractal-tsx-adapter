@@ -18,6 +18,7 @@
   "author": "Mihkel Eidast <mihkel@play.ee> (https://play.ee)",
   "license": "MIT",
   "dependencies": {
+    "callsite": "^1.0.0",
     "lodash": "^4.17.20",
     "react-jsx-parser": "^1.27.0",
     "ts-node": "^9.0.0",
